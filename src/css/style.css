@@ -1,0 +1,188 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans,Helvetica Neue, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #000000;
+  background-color: #ffffff;
+}
+
+button {
+  padding: 10px 15px;
+
+  font-size: inherit;
+
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 15px;
+
+  cursor: pointer;
+}
+
+textarea {
+  padding: 5px;
+
+  font: inherit;
+
+  color: inherit;
+  box-shadow: none;
+  outline: none;
+
+  resize: none;
+
+  overflow-wrap: break-word;
+}
+
+.add-button {
+  display: flex;
+  margin-left: auto;
+}
+
+.tickets__list {
+  margin-top: 20px;
+
+  border: 1px solid black;
+}
+
+.ticket {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 15px 15px 15px;
+
+  cursor: pointer;
+}
+
+.ticket:not(:first-child) {
+  border-top: 1px solid black;
+}
+
+.ticket__control-status.active::before {
+  content: '\2714';
+}
+
+.ticket__name {
+  flex-grow: 1;
+
+  overflow-wrap: anywhere;
+}
+
+[class^='ticket__control'] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  height: 30px;
+
+  font-size: 15px;
+
+  color: black;
+  background-color: #ffffff;
+  border: 1px solid black;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+[class^='ticket__control']:not(:last-child) {
+  margin-right: 15px;
+}
+
+.timestamp {
+  min-width: 120px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+.ticket__description {
+  display: none;
+  margin: 15px 0 0 0;
+}
+
+.ticket__description.active {
+  display: block;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal__content {
+  position: relative;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  max-width: 400px;
+  padding: 20px;
+  margin-right: 8px;
+  margin-left: 8px;
+  overflow: auto;
+
+  background: #ffffff;
+  border-radius: 15px;
+}
+
+.modal__header {
+  width: 100%;
+
+  font-weight: 400;
+  text-align: center;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__controls {
+  display: none;
+  flex-direction: column;
+}
+
+.form__controls.active {
+  display: flex;
+}
+
+.form__controls > *:not(:first-child) {
+  margin-top: 15px;
+}
+
+.modal__buttons {
+  display: flex;
+  margin-top: 15px;
+}
+
+[class^='modal__button-'] {
+  padding: 15px;
+}
+
+.modal__button-cancel {
+  margin-left: auto;
+}
+
+.modal__button-ok {
+  margin-left: 15px;
+}
+
+.form__description {
+  display: none;
+}
+
+.form__description.active {
+  display: block;
+}

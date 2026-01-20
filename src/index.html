@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Help desk</title>
+</head>
+
+<body>
+  <button class="add-button">Добавить тикет</button>
+
+  <div class="tickets__list"></div>
+
+  <div class="modal">
+    <div class="modal__content">
+      <h3 class="modal__header"></h3>
+      <form class="modal__form" data-ticket-id="">
+        <div class="form__controls">
+          <label class="form__label" for="name">Краткое описание:</label>
+          <textarea class="form__short-description" type="text" id="name" name="name" rows="1"></textarea>
+          <label class="form__label" for="description">Подробное описание:</label>
+          <textarea class="form__long-description" type="text" id="description" name="description" rows="2"></textarea>
+        </div>
+        <p class="form__description">Вы уверены, что хотите удалить тикет? Это действие необратимо.</p>
+        <div class="modal__buttons">
+          <button class="modal__button-cancel" type="button">Отмена</button>
+          <button class="modal__button-ok" type="submit">Ok</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
