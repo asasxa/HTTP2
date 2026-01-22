@@ -13,7 +13,7 @@ export default class AddBtn {
 
   assignHandler() {
     this.addBtn.addEventListener('click', () => {
-      this.modalHeader.innerText = 'Добавить тикет';
+      this.modalHeader.textContent = 'Добавить тикет';
       this.modalFormControls.classList.add('active');
       this.modal.classList.add('active');
     });

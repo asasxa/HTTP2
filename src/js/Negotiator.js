@@ -16,6 +16,14 @@ export default class Negotiator {
 
     const xhr = new XMLHttpRequest();
 
+    xhr.timeout = 10000; // 10 секунд
+    xhr.onerror = () => {
+      console.error('Network error: request failed');
+    };
+    xhr.ontimeout = () => {
+      console.error('Request timeout');
+    };
+
     try {
       xhr.open(method, url);
 

@@ -39,7 +39,7 @@ export default class Modal extends TemplateEngine {
       postParams.append('status', false);
       postParams.append('method', 'createTicket');
 
-      if (this.modalHeader.innerText === 'Добавить тикет') {
+      if (this.modalHeader.textContent === 'Добавить тикет') {
         this.negotiator.createRequest({
           method: 'POST',
           data: postParams,
@@ -51,7 +51,7 @@ export default class Modal extends TemplateEngine {
             console.log('Новый тикет был добавлен.');
           },
         });
-      } else if (this.modalHeader.innerText === 'Изменить тикет') {
+      } else if (this.modalHeader.textContent === 'Изменить тикет') {
         const ticketName = ticket.querySelector('.ticket__name');
         const ticketDescription = ticket.querySelector('.ticket__description');
         const patchParams = new URLSearchParams();
@@ -69,13 +69,13 @@ export default class Modal extends TemplateEngine {
               ticketName.firstChild.replaceWith(receivedData.name);
             }
             if (Object.prototype.hasOwnProperty.call(receivedData, 'description')) {
-              ticketDescription.innerText = receivedData.description;
+              ticketDescription.textContent = receivedData.description;
             }
             this.modalFormControls.classList.remove('active');
             console.log('Измененные значения сохранены.');
           },
         });
-      } else if (this.modalHeader.innerText === 'Удалить тикет') {
+      } else if (this.modalHeader.textContent === 'Удалить тикет') {
         this.negotiator.createRequest({
           method: 'DELETE',
           url: `?method=deleteTicket&id=${ticketId}`,

@@ -23,8 +23,11 @@ export default class TicketsList extends TemplateEngine {
   assignHandler() {
     this.ticketsList.addEventListener('click', (event) => {
       const { target } = event;
-      const targetClass = target.className;
       const ticket = target.closest('.ticket');
+
+      if (!ticket) return;
+
+      const targetClass = target.className;
 
       if (targetClass.startsWith('ticket__control-status')) {
         target.classList.toggle('active');
@@ -32,6 +35,7 @@ export default class TicketsList extends TemplateEngine {
         params.append('id', ticket.id);
         params.append('status', target.classList.contains('active'));
         params.append('method', 'changeTicket');
+
         this.negotiator.createRequest({
           method: 'PATCH',
           data: params,
@@ -40,21 +44,26 @@ export default class TicketsList extends TemplateEngine {
             console.log(`Статус тикета с id #${ticket.id} был изменен на ${receivedData.status}`);
           },
         });
-      } else if (targetClass.startsWith('ticket__description')) {
-        target.classList.remove('active');
       } else if (targetClass === 'ticket__control-edit') {
         this.modalForm.dataset.ticketId = ticket.id;
-        this.modalHeader.innerText = 'Изменить тикет';
+        this.modalHeader.textContent = 'Изменить тикет';
         this.modalFormControls.classList.add('active');
         this.modal.classList.add('active');
       } else if (targetClass === 'ticket__control-delete') {
         this.modalForm.dataset.ticketId = ticket.id;
-        this.modalHeader.innerText = 'Удалить тикет';
+        this.modalHeader.textContent = 'Удалить тикет';
         this.modalFormDescription.classList.add('active');
         this.modal.classList.add('active');
+      } else if (targetClass.includes('ticket__description')) {
+        const description = ticket.querySelector('.ticket__description');
+        if (description) {
+          description.classList.remove('active');
+        }
       } else {
         const description = ticket.querySelector('.ticket__description');
-        description.classList.add('active');
+        if (description) {
+          description.classList.add('active');
+        }
       }
     });
   }
@@ -72,7 +81,6 @@ export default class TicketsList extends TemplateEngine {
         });
 
         this.ticketsList.insertAdjacentHTML('beforeend', html);
-
         console.log('Все тикеты загружены с сервера.');
       },
     });
