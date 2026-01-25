@@ -22,7 +22,7 @@ const addBtn = new AddBtn(
 
 addBtn.assignHandler();
 
-const negotiator = new Negotiator('https://help-desk-backend-2021.herokuapp.com/');
+const negotiator = new Negotiator('https://help-desk-backend-2021.herokuapp.com');
 
 const modal = new Modal(
   modalEl,
