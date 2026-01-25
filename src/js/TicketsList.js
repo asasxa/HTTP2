@@ -41,7 +41,7 @@ export default class TicketsList extends TemplateEngine {
           data: params,
           callback: (response) => {
             const receivedData = JSON.parse(response);
-            console.log(`Статус тикета с id #${ticket.id} был изменен на ${receivedData.status}`);
+            console.log('Статус тикета с id #${ticket.id} был изменен на ${receivedData.status}');
           },
         });
       } else if (targetClass === 'ticket__control-edit') {
