@@ -71,7 +71,7 @@ export default class TicketsList extends TemplateEngine {
   downloadTickets() {
     this.negotiator.createRequest({
       method: 'GET',
-      url: '?method=allFullTickets',
+      url: '?method=allTickets',
       callback: (response) => {
         const receivedData = JSON.parse(response);
         let html = '';
