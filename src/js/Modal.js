@@ -27,58 +27,65 @@ export default class Modal extends TemplateEngine {
       event.preventDefault();
 
       const { ticketId } = event.currentTarget.dataset;
-      let ticket;
+      let ticket = null;
       if (ticketId) {
         ticket = this.ticketsList.querySelector(`#${ticketId}`);
       }
 
-      const postParams = new URLSearchParams();
-      Array.from(event.currentTarget.elements)
-        .filter(({ name }) => name)
-        .forEach(({ name, value }) => postParams.append(name, value));
-      postParams.append('status', false);
-      postParams.append('method', 'createTicket');
-
       if (this.modalHeader.textContent === 'Добавить тикет') {
+        const formData = new FormData(event.currentTarget);
+        const ticketData = {
+          name: formData.get('name'),
+          description: formData.get('description'),
+          status: false,
+        };
+
         this.negotiator.createRequest({
           method: 'POST',
-          data: postParams,
+          url: '?method=createTicket',
+           ticketData,
           callback: (response) => {
-            const receivedData = JSON.parse(response);
+            const receivedData = response;
             const ticketHTML = this.constructor.getTicketHTML(receivedData);
             this.ticketsList.insertAdjacentHTML('beforeend', ticketHTML);
             this.modalFormControls.classList.remove('active');
             console.log('Новый тикет был добавлен.');
           },
         });
-      } else if (this.modalHeader.textContent === 'Изменить тикет') {
+      }
+
+      else if (this.modalHeader.textContent === 'Изменить тикет') {
         const ticketName = ticket.querySelector('.ticket__name');
         const ticketDescription = ticket.querySelector('.ticket__description');
-        const patchParams = new URLSearchParams();
-        Array.from(event.currentTarget.elements)
-          .filter(({ name }) => name)
-          .forEach(({ name, value }) => patchParams.append(name, value));
-        patchParams.append('id', ticketId);
-        patchParams.append('method', 'changeTicket');
+
+        const formData = new FormData(event.currentTarget);
+        const updateData = {
+          name: formData.get('name'),
+          description: formData.get('description'),
+        };
+
         this.negotiator.createRequest({
           method: 'PATCH',
-          data: patchParams,
+          url: `?method=updateById&id=${ticketId}`,
+           updateData,
           callback: (response) => {
-            const receivedData = JSON.parse(response);
-            if (Object.prototype.hasOwnProperty.call(receivedData, 'name')) {
-              ticketName.firstChild.replaceWith(receivedData.name);
+            const receivedData = response;
+            if (receivedData.name !== undefined) {
+              ticketName.firstChild.replaceWith(document.createTextNode(receivedData.name));
             }
-            if (Object.prototype.hasOwnProperty.call(receivedData, 'description')) {
+            if (receivedData.description !== undefined) {
               ticketDescription.textContent = receivedData.description;
             }
             this.modalFormControls.classList.remove('active');
             console.log('Измененные значения сохранены.');
           },
         });
-      } else if (this.modalHeader.textContent === 'Удалить тикет') {
+      }
+
+      else if (this.modalHeader.textContent === 'Удалить тикет') {
         this.negotiator.createRequest({
           method: 'DELETE',
-          url: `?method=deleteTicket&id=${ticketId}`,
+          url: `?method=deleteById&id=${ticketId}`,
           callback: () => {
             ticket.remove();
             this.modalFormDescription.classList.remove('active');
@@ -86,6 +93,7 @@ export default class Modal extends TemplateEngine {
           },
         });
       }
+
       this.modalForm.reset();
       this.modal.classList.remove('active');
     });
