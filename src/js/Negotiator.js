@@ -8,7 +8,7 @@ export default class Negotiator {
       throw new Error('Параметр options функции createRequest не задан');
     }
 
-    const { method, data, callback } = options;
+    const { method, data, callback, headers = {} } = options;
     let url = this.baseURL;
     if (options.url) {
       url += options.url;
@@ -16,7 +16,7 @@ export default class Negotiator {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.timeout = 10000; // 10 секунд
+    xhr.timeout = 10000;
     xhr.onerror = () => {
       console.error('Network error: request failed');
     };
@@ -27,11 +27,20 @@ export default class Negotiator {
     try {
       xhr.open(method, url);
 
+      for (const key in headers) {
+        xhr.setRequestHeader(key, headers[key]);
+      }
+
       xhr.onloadend = () => {
         if (String(xhr.status).startsWith('2')) {
           console.log('Сервер принял и обработал запрос.');
           if (callback) {
-            callback(xhr.response);
+            try {
+              const response = xhr.responseText ? JSON.parse(xhr.responseText) : null;
+              callback(response);
+            } catch (e) {
+              callback(xhr.responseText);
+            }
           }
         } else {
           let content = 'Сервер не принял запрос. ';
@@ -40,11 +49,15 @@ export default class Negotiator {
         }
       };
 
-      if (data === undefined) {
-        xhr.send();
-      } else {
-        xhr.send(data);
+      let sendData = data;
+      if (data !== undefined && typeof data === 'object' && !(data instanceof FormData)) {
+        sendData = JSON.stringify(data);
+        if (!headers['Content-Type'] && !headers['content-type']) {
+          xhr.setRequestHeader('Content-Type', 'application/json');
+        }
       }
+
+      xhr.send(sendData);
     } catch (e) {
       console.error(e);
     }
